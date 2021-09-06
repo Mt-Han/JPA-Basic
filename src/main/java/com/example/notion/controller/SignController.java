@@ -1,7 +1,9 @@
 package com.example.notion.controller;
 
-import com.example.notion.sign.entity.Sign;
-import com.example.notion.sign.repository.SignRepository;
+import com.example.notion.module.sign.entity.Sign;
+import com.example.notion.module.sign.repository.SignRepository;
+import com.example.notion.service.SignService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,20 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class SignController {
 
-    @Autowired
-    private SignRepository signRepository;
+    private final SignService signService;
 
     @GetMapping("/test")
     public ResponseEntity<?> test(){
-        List<Sign> signList = new ArrayList<>();
-        signList.add(new Sign());
-        signList.add(new Sign());
-        signList.add(new Sign());
-//        Sign sign = signRepository.save(new Sign());
-        signRepository.saveAll(signList);
-        return ResponseEntity.ok(null);
+
+        return ResponseEntity.ok(signService.getSign());
     }
 }

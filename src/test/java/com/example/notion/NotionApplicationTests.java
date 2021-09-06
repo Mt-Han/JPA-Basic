@@ -1,15 +1,11 @@
 package com.example.notion;
 
-import com.example.notion.sign.entity.Sign;
-import com.example.notion.sign.repository.SignRepository;
-import javassist.tools.web.BadHttpRequest;
+import com.example.notion.module.sign.entity.Sign;
+import com.example.notion.module.sign.repository.SignRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
 class NotionApplicationTests {
