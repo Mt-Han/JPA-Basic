@@ -22,21 +22,30 @@ public class TestDataCreater implements ApplicationRunner {
     @Autowired
     private BoardRepository boardRepository;
 
-    private List<Long> userIdList = new ArrayList<>();
-    private List<Long> adminIdList = new ArrayList<>();
-    private List<Long> boardIdList = new ArrayList<>();
+    private static List<Long> userIdList = new ArrayList<>();
+    private static List<Long> adminIdList = new ArrayList<>();
+    private static List<Long> boardIdList = new ArrayList<>();
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         createSign();
+//        updateUser();
         createBoard();
+//        removeUser();
     }
 
-    @Transactional
     public void createSign(){
         for (int i=0;i<10;i++){
             Sign user = new Sign().create("user"+i,"1234",1+i, Sign.SignType.USER);
-            userIdList.add(signRepository.save(user).getId());
+
+            List<Board> boards = new ArrayList<>();
+            for (int j=0;j<10;j++){
+                boards.add(new Board().create("title"+j,"cotent", user));
+            }
+//            user.setBoardList(boards);
+
+            user = signRepository.save(user);
+            userIdList.add(user.getId());
 
             Sign admin = new Sign().create("admin"+i,"1234",1+i, Sign.SignType.ADMIN);
             adminIdList.add(signRepository.save(admin).getId());
@@ -50,5 +59,20 @@ public class TestDataCreater implements ApplicationRunner {
                 boardIdList.add(boardRepository.save(board).getId());
             }
         }
+    }
+
+    public void updateUser(){
+        Sign user = signRepository.getById(userIdList.get(0));
+        List<Board> boardList = new ArrayList<>();
+        for (int j=0;j<10;j++){
+            boardList.add(new Board().create("title"+j,"cotent",user));
+        }
+//        user.setBoardList(boardList);
+
+        user.setUserName("tttt");
+    }
+
+    private void removeUser(){
+        signRepository.deleteById(userIdList.get(0));
     }
 }

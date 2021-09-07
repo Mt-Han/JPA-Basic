@@ -2,9 +2,12 @@ package com.example.notion.module.sign.entity;
 
 import com.example.notion.common.entity.BaseEntity;
 import com.example.notion.module.board.entity.Board;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,13 +18,21 @@ import java.util.List;
 @Table(name = "tb_sign")
 @Getter
 @NoArgsConstructor
+@DynamicUpdate
+@TableGenerator(
+        name = "SIGN_SEQ_SEQUENCE",
+        table = "TB_SEQUENCE",
+        pkColumnValue = "SIGN_SEQ",
+        allocationSize = 1
+)
 public class Sign extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "SIGN_SEQ_SEQUENCE") // 테이블
     private Long id;
 
     @Column
+    @Setter
     private String userName;
 
     private String password;
@@ -45,8 +56,6 @@ public class Sign extends BaseEntity {
         public String getValue() { return value; }
     }
 
-    @OneToMany(mappedBy = "sign")
-    private List<Board> boardList;
 
     private Sign(String userName, String password, Integer age, SignType signType) {
         this.userName = userName;
@@ -59,4 +68,6 @@ public class Sign extends BaseEntity {
     public Sign create(String userName, String password, Integer age, SignType signType){
         return new Sign(userName,password,age,signType);
     }
+
+
 }

@@ -21,6 +21,7 @@ public class SignController {
     @GetMapping("/test")
     public ResponseEntity<?> test(){
 
-        return ResponseEntity.ok(signService.getSign());
+        signService.test();
+        return ResponseEntity.ok(true);
     }
 }
